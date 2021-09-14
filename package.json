@@ -1,0 +1,24 @@
+{
+  "name": "monster",
+  "version": "1.0.0",
+  "description": "small command line game",
+  "main": "index.js",
+  "devDependencies": {
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12"
+  },
+  "scripts": {
+    "start": "nodemon src/index",
+    "test": "jest --coverage --runInBand"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexcphillips/monster.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alexcphillips/monster/issues"
+  },
+  "homepage": "https://github.com/alexcphillips/monster#readme"
+}
