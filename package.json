@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/alexcphillips/monster/issues"
   },
-  "homepage": "https://github.com/alexcphillips/monster#readme"
+  "homepage": "https://github.com/alexcphillips/monster#readme",
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  }
 }
