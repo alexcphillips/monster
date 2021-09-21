@@ -1,5 +1,5 @@
-const { hero, enemyList, sleep, getRandom, getTurnOrder, randomDestroyerVerb, randomEncounter, fight, namePrompt } = require('./indexUtils')
-
+const { fight } = require("./fight");
+const { namePrompt, playAgain } = require("./msg");
 
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -17,11 +17,18 @@ const { hero, enemyList, sleep, getRandom, getTurnOrder, randomDestroyerVerb, ra
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-
 //start from beginning
-const start = () => {
-  namePrompt()
-  fight()
+const start = async (name) => {
+  if (!name) {
+    name = namePrompt();
+  }
+  await fight();
+  if (playAgain()) {
+    console.log(`${name} was revived`);
+    start(name);
+  } else {
+    console.log(`And ${name}'s soul was turned to ashes...`);
+  }
 };
 
 start();
