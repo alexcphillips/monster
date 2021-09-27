@@ -1,6 +1,7 @@
 const { fight } = require("./fight");
 const { namePrompt, playAgain } = require("./msg");
-
+require("./routes");
+const { hero } = require("./hero");
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
   add level property for enemies and hero
@@ -17,12 +18,22 @@ const { namePrompt, playAgain } = require("./msg");
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-//start from beginning
+const init = async () => {
+  const { db } = require("./db");
+
+  await db();
+  start();
+};
 const start = async (name) => {
+  const newHero = { ...hero };
   if (!name) {
     name = namePrompt();
+    if (!name) {
+      throw new Error("namePrompt didnt return a name");
+    }
   }
-  await fight();
+  newHero.name = name;
+  await fight(newHero);
   if (playAgain()) {
     console.log(`${name} was revived`);
     start(name);
@@ -31,4 +42,4 @@ const start = async (name) => {
   }
 };
 
-start();
+init();

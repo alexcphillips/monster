@@ -1,20 +1,22 @@
-const { enemies } = require("./enemies");
 const { hitMessage } = require("./msg");
 const { sleep, getRandom } = require("./utils");
-const { hero } = require("./hero");
+const { Enemy } = require("./db");
 
-const randomEncounter = async (quantity = 1) => {
-  //return array of random enemy object(s)
-  let count = 0;
-  let encounter = [];
-
-  while (count < quantity) {
-    encounter.push({ ...enemies[getRandom(enemies.length)] });
-    count++;
+const randomEncounter = async (hero, quantity = 1) => {
+  try {
+    //return array of random enemy object(s)
+    let encounter = [];
+    let enemies = await Enemy.find({});
+    for (let count = 0; count < quantity; count++) {
+      encounter.push(enemies[getRandom(enemies.length)]);
+    }
+    await sleep(1000);
+    console.log(`\n${hero.name} encountered a ${enemies[0].name}!\n`);
+    console.log(encounter);
+    return encounter;
+  } catch (err) {
+    console.log(err);
   }
-  await sleep(1000);
-  console.log(`\n${hero.name} encountered a ${enemies[0].name}!\n`);
-  return encounter;
 };
 
 const isDead = (character) => {
@@ -58,27 +60,22 @@ const heroTurn = () => {
 
 const battleRound = async (turnOrder) => {
   const [attacker, defender] = turnOrder;
-  // if (attacker.isHero) {
-  //   let choice = heroTurn();
-  //   console.log(choice);
-  // }
   defender.hp -= attacker.atk;
   const deadChar = await deathCheck(defender, attacker);
   if (deadChar) {
     return deadChar;
   }
-
   await hitMessage(defender, attacker);
   turnOrder.reverse();
   return;
 };
 
-const fight = async () => {
-  //sort enemies into array by speed and save to turns variable
+const fight = async (hero) => {
   let deadChar;
   while (!deadChar || (deadChar && !deadChar.isHero)) {
     deadChar = undefined;
-    let enemy = await randomEncounter();
+    let enemy = await randomEncounter(hero);
+    console.log(hero);
     let turnOrder = getTurnOrder(hero, enemy[0]);
 
     while (!deadChar) {
