@@ -1,34 +1,24 @@
 const readlineSync = require("readline-sync");
 const { getRandom, sleep } = require("./utils");
-const { hero } = require("./hero");
 
-if (!hero) {
-  throw new Error("Hero is not defined");
-}
 const isaacCheck = (name, insist) => {
   if (insist) {
     console.log("Okay, if you're sure...");
-    hero.name = name;
-    return;
+    return name;
   }
   if (name.toLowerCase().trim() === "isaac") {
     console.log("Name too weak! Try again.");
-    namePrompt(true);
+    return namePrompt(true);
   }
+  return name;
 };
 
 const namePrompt = (insist) => {
-  const initName = question({
+  let name = question({
     q: "This is the tale of...: ",
     unacceptableOptions: ["isaac", "alex", ""]
   });
-  hero.name = !initName
-    ? "Noob"
-    : initName.toLowerCase() === "alex"
-    ? "Isaac's Best Friend"
-    : initName;
-  isaacCheck(initName, insist);
-  return hero.name;
+  return isaacCheck(name, insist);
 };
 
 const question = (opts) => {
@@ -78,6 +68,7 @@ const numberedOptions = (...options) => {
 
 const hitMessage = async (defender, attacker) => {
   await sleep(1000);
+  console.log(attacker);
   console.log(
     `${attacker.name} hit ${defender.name} for (${attacker.atk})dmg! [${defender.name} has (${defender.hp})hp].\n`
   );
